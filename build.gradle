@@ -30,6 +30,8 @@ dependencies {
 	}
 	// Jackson Datatype
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.11.1'
+
+	implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13' // para el ObjectMapper de PatchTool
 }
 
 test {

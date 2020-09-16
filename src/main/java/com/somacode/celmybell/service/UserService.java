@@ -4,6 +4,7 @@ import com.somacode.celmybell.config.exception.BadRequestException;
 import com.somacode.celmybell.config.exception.NotFoundException;
 import com.somacode.celmybell.entity.User;
 import com.somacode.celmybell.repository.UserRepository;
+import com.somacode.celmybell.service.tool.PatchTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired UserRepository userRepository;
+    @Autowired PatchTool patchTool;
 
     public void init() {
         User user = new User();
@@ -45,12 +47,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
-//    public User update(Long id, User user) {
-//        if (!userRepository.existsById(id)) {
-//            throw new NotFoundException("User does not exist");
-//        }
-//        User u = userRepository.getOne(id);
-//    }
+    public User update(Long id, User user) {
+        if (!userRepository.existsById(id)) {
+            throw new NotFoundException("User does not exist");
+        }
+        User u = userRepository.getOne(id);
+
+        patchTool.patch(user, u);
+        return userRepository.save(u);
+    }
 
     public void delete(Long id) {
         if (!userRepository.existsById(id)) {

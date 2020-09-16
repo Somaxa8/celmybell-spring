@@ -1,7 +1,7 @@
-package com.somacode.celmybell.entity.tool;
+package com.somacode.celmybell.service.tool;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -16,14 +16,14 @@ public class PatchTool {
     @PostConstruct
     private void init() {
         objectMapper = new ObjectMapper();
-//        objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+        objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
     }
 
     public void patch(Object source, Object target) {
         try {
             objectMapper.readerForUpdating(target).readValue(objectMapper.writeValueAsString(source));
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 }

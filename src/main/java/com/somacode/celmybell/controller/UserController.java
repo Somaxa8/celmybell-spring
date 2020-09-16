@@ -28,10 +28,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(user));
     }
 
-//    @PatchMapping("/api/users/{id}")
-//    public ResponseEntity<User> editUser(@PathVariable Long id) {
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.update(id));
-//    }
+    @PatchMapping("/api/users/{id}")
+    public ResponseEntity<User> editUser(@PathVariable Long id, @RequestBody User user) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(id, user));
+    }
 
     @DeleteMapping("/api/users/{id}")
     public ResponseEntity<User> editUser(@PathVariable Long id) {
