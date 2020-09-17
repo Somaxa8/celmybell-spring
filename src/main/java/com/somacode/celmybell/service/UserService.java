@@ -26,6 +26,7 @@ public class UserService {
         user.setEmail("celmy@gmail.com");
         user.setPassword("1234");
         user.setActivated(true);
+        user.getId();
         create(user);
     }
 
@@ -53,6 +54,9 @@ public class UserService {
         }
         User u = userRepository.getOne(id);
 
+        user.setId(null);
+        user.setPassword(null);
+
         patchTool.patch(user, u);
         return userRepository.save(u);
     }
@@ -63,4 +67,11 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
+//    public User login(String email, String password) {
+//        if (!userRepository.existsByEmail(email)) {
+//            throw new NotFoundException("User does not exist");
+//        }
+//
+//    }
 }
