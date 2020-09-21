@@ -1,5 +1,6 @@
 package com.somacode.celmybell.controller;
 
+import com.google.gson.JsonObject;
 import com.somacode.celmybell.entity.User;
 import com.somacode.celmybell.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +8,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
 public class UserController {
     @Autowired UserService userService;
+
+    @GetMapping("/public/login")
+    public ResponseEntity<JsonObject> login(@RequestBody String password) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.login(password));
+    }
+
+    @GetMapping("/public/logout")
+    public ResponseEntity<JsonObject> logout(HttpServletRequest request, HttpServletResponse response) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.logout(request, response));
+    }
 
     @GetMapping("/api/users")
     public ResponseEntity<List<User>> getUsers() {

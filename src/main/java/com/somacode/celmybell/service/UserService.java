@@ -1,13 +1,19 @@
 package com.somacode.celmybell.service;
 
+import com.google.gson.JsonObject;
 import com.somacode.celmybell.config.exception.BadRequestException;
 import com.somacode.celmybell.config.exception.NotFoundException;
 import com.somacode.celmybell.entity.User;
 import com.somacode.celmybell.repository.UserRepository;
 import com.somacode.celmybell.service.tool.PatchTool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +27,7 @@ public class UserService {
 
     public void init() {
         User user = new User();
+        user.setUsername("celmybell");
         user.setName("celmy");
         user.setLastname("guzman");
         user.setEmail("celmy@gmail.com");
@@ -68,10 +75,24 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-//    public User login(String email, String password) {
-//        if (!userRepository.existsByEmail(email)) {
-//            throw new NotFoundException("User does not exist");
-//        }
-//
-//    }
+    public JsonObject login(String email) {
+        if (!userRepository.existsByEmail(email)) {
+            throw new NotFoundException("User does not exist");
+        }
+
+        JsonObject json = new JsonObject();
+        json.addProperty("message", "you have logged in");
+        return json;
+    }
+
+    public JsonObject logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+
+        JsonObject json = new JsonObject();
+        json.addProperty("message", "you have logged out");
+        return json;
+    }
 }
