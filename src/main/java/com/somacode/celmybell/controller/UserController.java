@@ -2,7 +2,7 @@ package com.somacode.celmybell.controller;
 
 import com.somacode.celmybell.entity.User;
 import com.somacode.celmybell.service.UserService;
-import com.somacode.celmybell.service.tool.TokenResponse;
+import com.somacode.celmybell.model.TokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

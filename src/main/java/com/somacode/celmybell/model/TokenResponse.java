@@ -1,4 +1,4 @@
-package com.somacode.celmybell.service.tool;
+package com.somacode.celmybell.model;
 
 import lombok.Data;
 
