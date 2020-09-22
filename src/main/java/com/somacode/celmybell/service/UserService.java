@@ -1,24 +1,18 @@
 package com.somacode.celmybell.service;
 
-import com.google.gson.JsonObject;
 import com.somacode.celmybell.config.exception.BadRequestException;
 import com.somacode.celmybell.config.exception.NotFoundException;
 import com.somacode.celmybell.entity.User;
 import com.somacode.celmybell.repository.UserRepository;
 import com.somacode.celmybell.service.tool.PatchTool;
+import com.somacode.celmybell.service.tool.TokenResponse;
 import com.somacode.celmybell.service.tool.TokenTool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -78,12 +72,12 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public JsonObject login(String username, String password) {
+    public TokenResponse login(String username, String password) {
         String token = tokenTool.getToken(username);
-        JsonObject tokenObject = new JsonObject();
-        tokenObject.addProperty("password", password);
-        tokenObject.addProperty("token", token);
-        return tokenObject;
+        TokenResponse tokenResponse = new TokenResponse();
+        tokenResponse.setToken(token);
+        tokenResponse.setPassword(password);
+        return tokenResponse;
 
     }
 
