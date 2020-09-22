@@ -15,7 +15,7 @@ public class UserController {
     @Autowired UserService userService;
 
     @PostMapping("/public/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody String username, @RequestBody String password) {
+    public ResponseEntity<TokenResponse> login(@RequestParam String username, @RequestParam String password) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.login(username, password));
     }
 
