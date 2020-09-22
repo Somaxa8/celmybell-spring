@@ -21,6 +21,8 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'mysql:mysql-connector-java'
@@ -32,10 +34,11 @@ dependencies {
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.11.1'
 	// Codehaus JacksonMapper
 	implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.13' // para el ObjectMapper de PatchTool
-	// Spring Security
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// Gson
 	compile "com.google.code.gson:gson"
+	//JWT
+	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+	compile 'io.jsonwebtoken:jjwt:0.9.1'
 }
 
 test {

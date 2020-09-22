@@ -16,7 +16,7 @@ import java.util.Set;
 public class Authority {
 
     public enum Name {
-        ROLE_SUPERADMIN, ROLE_ADMIN
+        ROLE_SUPERADMIN, ROLE_ADMIN, ROLE_USER
     }
 
     @Id

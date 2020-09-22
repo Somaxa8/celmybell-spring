@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User appUser = userRepository.findByUsername(username).
         orElseThrow(() -> new UsernameNotFoundException("No existe usuario"));
 
-        List grantList = new ArrayList();
+        List<GrantedAuthority> grantList = new ArrayList<>();
 
         for (Authority authority: appUser.getAuthorities()) {
             // ROLE_USER, ROLE_ADMIN,..

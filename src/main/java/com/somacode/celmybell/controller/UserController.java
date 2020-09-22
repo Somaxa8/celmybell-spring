@@ -16,15 +16,15 @@ import java.util.List;
 public class UserController {
     @Autowired UserService userService;
 
-    @GetMapping("/public/login")
-    public ResponseEntity<JsonObject> login(@RequestBody String password) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.login(password));
+    @PostMapping("/public/login")
+    public ResponseEntity<JsonObject> login(@RequestBody String username, @RequestBody String password) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.login(username, password));
     }
 
-    @GetMapping("/public/logout")
-    public ResponseEntity<JsonObject> logout(HttpServletRequest request, HttpServletResponse response) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.logout(request, response));
-    }
+//    @GetMapping("/public/logout")
+//    public ResponseEntity<JsonObject> logout(HttpServletRequest request, HttpServletResponse response) {
+//        return ResponseEntity.status(HttpStatus.OK).body(userService.logout(request, response));
+//    }
 
     @GetMapping("/api/users")
     public ResponseEntity<List<User>> getUsers() {

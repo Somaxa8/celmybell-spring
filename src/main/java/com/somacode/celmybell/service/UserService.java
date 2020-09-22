@@ -6,9 +6,11 @@ import com.somacode.celmybell.config.exception.NotFoundException;
 import com.somacode.celmybell.entity.User;
 import com.somacode.celmybell.repository.UserRepository;
 import com.somacode.celmybell.service.tool.PatchTool;
+import com.somacode.celmybell.service.tool.TokenTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,8 @@ public class UserService {
 
     @Autowired UserRepository userRepository;
     @Autowired PatchTool patchTool;
+    @Autowired PasswordEncoder passwordEncoder;
+    @Autowired TokenTool tokenTool;
 
     public void init() {
         User user = new User();
@@ -31,9 +35,8 @@ public class UserService {
         user.setName("celmy");
         user.setLastname("guzman");
         user.setEmail("celmy@gmail.com");
-        user.setPassword("1234");
+        user.setPassword(passwordEncoder.encode("1234"));
         user.setActivated(true);
-        user.getId();
         create(user);
     }
 
@@ -75,24 +78,23 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public JsonObject login(String email) {
-        if (!userRepository.existsByEmail(email)) {
-            throw new NotFoundException("User does not exist");
-        }
+    public JsonObject login(String username, String password) {
+        String token = tokenTool.getToken(username);
+        JsonObject tokenObject = new JsonObject();
+        tokenObject.addProperty("password", password);
+        tokenObject.addProperty("token", token);
+        return tokenObject;
 
-        JsonObject json = new JsonObject();
-        json.addProperty("message", "you have logged in");
-        return json;
     }
 
-    public JsonObject logout(HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-
-        JsonObject json = new JsonObject();
-        json.addProperty("message", "you have logged out");
-        return json;
-    }
+//    public JsonObject logout(HttpServletRequest request, HttpServletResponse response) {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if (auth != null) {
+//            new SecurityContextLogoutHandler().logout(request, response, auth);
+//        }
+//
+//        JsonObject json = new JsonObject();
+//        json.addProperty("message", "you have logged out");
+//        return json;
+//    }
 }
