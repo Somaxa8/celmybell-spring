@@ -5,7 +5,7 @@ import com.somacode.celmybell.config.exception.NotFoundException;
 import com.somacode.celmybell.entity.User;
 import com.somacode.celmybell.repository.UserRepository;
 import com.somacode.celmybell.service.tool.PatchTool;
-import com.somacode.celmybell.model.TokenResponse;
+import com.somacode.celmybell.service.model.TokenResponse;
 import com.somacode.celmybell.service.tool.TokenTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
