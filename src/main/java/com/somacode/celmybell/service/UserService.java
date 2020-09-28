@@ -5,10 +5,7 @@ import com.somacode.celmybell.config.exception.NotFoundException;
 import com.somacode.celmybell.entity.User;
 import com.somacode.celmybell.repository.UserRepository;
 import com.somacode.celmybell.service.tool.PatchTool;
-import com.somacode.celmybell.service.model.TokenResponse;
-import com.somacode.celmybell.service.tool.TokenTool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,8 +17,7 @@ public class UserService {
 
     @Autowired UserRepository userRepository;
     @Autowired PatchTool patchTool;
-    @Autowired PasswordEncoder passwordEncoder;
-    @Autowired TokenTool tokenTool;
+//    @Autowired PasswordEncoder passwordEncoder;
 
     public void init() {
         User user = new User();
@@ -29,7 +25,7 @@ public class UserService {
         user.setName("celmy");
         user.setLastname("guzman");
         user.setEmail("celmy@gmail.com");
-        user.setPassword(passwordEncoder.encode("1234"));
+//        user.setPassword(passwordEncoder.encode("1234"));
         user.setActivated(true);
         create(user);
     }
@@ -71,24 +67,4 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
-
-    public TokenResponse login(String username, String password) {
-        String token = tokenTool.getToken(username);
-        TokenResponse tokenResponse = new TokenResponse();
-        tokenResponse.setToken(token);
-        tokenResponse.setPassword(password);
-        return tokenResponse;
-
-    }
-
-//    public JsonObject logout(HttpServletRequest request, HttpServletResponse response) {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth != null) {
-//            new SecurityContextLogoutHandler().logout(request, response, auth);
-//        }
-//
-//        JsonObject json = new JsonObject();
-//        json.addProperty("message", "you have logged out");
-//        return json;
-//    }
 }

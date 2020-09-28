@@ -14,7 +14,7 @@ public class PopulateConfig {
 
     @PostConstruct
     public void populateDatabase() {
-        userService.init();
         authorityService.init();
+        userService.init();
     }
 }
