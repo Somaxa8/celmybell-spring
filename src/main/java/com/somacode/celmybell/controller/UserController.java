@@ -2,7 +2,6 @@ package com.somacode.celmybell.controller;
 
 import com.somacode.celmybell.entity.User;
 import com.somacode.celmybell.service.UserService;
-import com.somacode.celmybell.service.model.TokenResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,16 +12,6 @@ import java.util.List;
 @RestController
 public class UserController {
     @Autowired UserService userService;
-
-    @PostMapping("/public/login")
-    public ResponseEntity<TokenResponse> login(@RequestParam String username, @RequestParam String password) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.login(username, password));
-    }
-
-//    @GetMapping("/public/logout")
-//    public ResponseEntity<JsonObject> logout(HttpServletRequest request, HttpServletResponse response) {
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.logout(request, response));
-//    }
 
     @GetMapping("/api/users")
     public ResponseEntity<List<User>> getUsers() {
