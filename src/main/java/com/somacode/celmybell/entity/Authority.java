@@ -17,7 +17,7 @@ import java.util.Set;
 public class Authority implements Serializable {
 
     public enum Name {
-        ROLE_SUPERADMIN, ROLE_ADMIN, ROLE_USER
+        ROLE_SUPERADMIN, ROLE_ADMIN, ROLE_USER, ROLE_SWAGGER
     }
 
     @Id
@@ -32,4 +32,7 @@ public class Authority implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}
     )
     private Set<User> users = new HashSet<>();
+
+    @Transient
+    private Boolean enabled;
 }

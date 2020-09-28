@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: celmybell
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:test
+    username: root
+custom:
+  username: admin@celmybell.com
+  password: 1234
+  version: 1.0
+  my-secret-token: my-secret-token
+  access-token-validity: 50000
+  refresh-token-validity: 50000
+  #    base-url: ${server.address}:${server.port}
+  base-url: localhost:8080
+  protocol: http
