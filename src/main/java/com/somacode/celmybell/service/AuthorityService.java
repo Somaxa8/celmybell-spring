@@ -14,13 +14,13 @@ public class AuthorityService {
     @Autowired AuthorityRepository authorityRepository;
 
     public void init() {
-//        if (authorityRepository.count() <= 0) {
-//            for (Authority.Name name : Authority.Name.values()) {
-//                Authority authority = new Authority();
-//                authority.setName(name);
-//                authority.setDescription("");
-//                authorityRepository.save(authority);
-//            }
-//        }
+        if (authorityRepository.count() <= 0) {
+            for (Authority.Name name : Authority.Name.values()) {
+                Authority authority = new Authority();
+                authority.setName(name);
+                authority.setDescription("");
+                authorityRepository.save(authority);
+            }
+        }
     }
 }

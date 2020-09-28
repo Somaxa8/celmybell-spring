@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements org.springframework.security.core
             grantList.add(grantedAuthority);
         }
         //Crear El objeto UserDetails que va a ir en sesion y retornarlo.
-        UserDetails user = (UserDetails) new org.springframework.security.core.userdetails.User(appUser.getUsername(), appUser.getPassword(), grantList);
+        UserDetails user = new org.springframework.security.core.userdetails.User(appUser.getUsername(), appUser.getPassword(), grantList);
         return user;
     }
 }

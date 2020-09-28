@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,16 +14,14 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(of = "name")
 @ToString(of = "name")
-public class Authority {
+public class Authority implements Serializable {
 
     public enum Name {
         ROLE_SUPERADMIN, ROLE_ADMIN, ROLE_USER
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Enumerated(EnumType.STRING)
     private Name name;
     private String description;
 
