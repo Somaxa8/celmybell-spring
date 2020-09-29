@@ -15,12 +15,9 @@ import java.util.StringJoiner;
 @Component
 public class DatabaseConfig {
 
-    @Autowired
-    OAuthClientDetailsRepository oAuthClientDetailsRepository;
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    @Autowired OAuthClientDetailsRepository oAuthClientDetailsRepository;
+    @Autowired PasswordEncoder passwordEncoder;
     @Autowired PopulateConfig populateConfig;
-    @Autowired LogService logService;
 
     @Value("${custom.my-secret-token}") String mySecretToken;
     @Value("${custom.access-token-validity}") Integer accessTokenValidity;
@@ -48,7 +45,6 @@ public class DatabaseConfig {
             oAuthClientDetails.setAutoapprove("true");
             oAuthClientDetailsRepository.save(oAuthClientDetails);
         }
-
         populateConfig.init();
     }
 }
