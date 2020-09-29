@@ -47,7 +47,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode("1234"));
         user.setActivated(true);
         create(user);
-        authorityService.relateUser(Authority.Name.ROLE_ADMIN, user.getId());
+        authorityService.relateUser(Authority.Name.ROLE_USER, user.getId());
     }
 
     public OAuth2AccessToken login(String username, String password) throws HttpRequestMethodNotSupportedException {
