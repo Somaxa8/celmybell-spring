@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -32,13 +31,12 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Configuration
 public class OAuth2Config {
 
     @Autowired DataSource dataSource;
+
     @Bean
     public TokenStore tokenStore() {
         return new JdbcTokenStore(dataSource) {
@@ -50,11 +48,11 @@ public class OAuth2Config {
             public OAuth2AccessToken readAccessToken(String tokenValue) {
                 OAuth2AccessToken accessToken = null;
                 try {
-                    accessToken = jdbcTemplate.queryForObject(selectAccessTokenSql, new RowMapper<OAuth2AccessToken>() {
-                        public OAuth2AccessToken mapRow(ResultSet rs, int rowNum) throws SQLException {
-                            return deserializeAccessToken(rs.getBytes(2));
-                        }
-                    }, extractTokenKey(tokenValue));
+                    accessToken = jdbcTemplate.queryForObject(
+                        selectAccessTokenSql,
+                        (rs, rowNum) -> deserializeAccessToken(rs.getBytes(2)),
+                        extractTokenKey(tokenValue)
+                    );
                 } catch (EmptyResultDataAccessException e) {
 //                    if (LOG.isInfoEnabled()) {
 //                        LOG.info("Failed to find access token for token " + tokenValue);
@@ -71,6 +69,7 @@ public class OAuth2Config {
     @Configuration
     @EnableResourceServer
     protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+
         @Autowired TokenStore tokenStore;
         @Autowired LogoutSuccess logoutSuccess;
         @Value("${spring.application.name}") String appName;
@@ -78,14 +77,14 @@ public class OAuth2Config {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http
-                    .exceptionHandling().authenticationEntryPoint(new BasicAuthenticationEntryPoint())
-                    .and().logout().logoutUrl("/api/logout").logoutSuccessHandler(logoutSuccess)
-                    .and().csrf().disable().headers().frameOptions().disable()
-                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and().authorizeRequests()
-                    .antMatchers("/api/authenticate").permitAll()
-                    .antMatchers("/api/register").permitAll()
-                    .antMatchers("/*api/**").authenticated();
+                .exceptionHandling().authenticationEntryPoint(new BasicAuthenticationEntryPoint())
+                .and().logout().logoutUrl("/api/logout").logoutSuccessHandler(logoutSuccess)
+                .and().csrf().disable().headers().frameOptions().disable()
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().authorizeRequests()
+                .antMatchers("/api/authenticate").permitAll()
+                .antMatchers("/api/register").permitAll()
+                .antMatchers("/*api/**").authenticated();
         }
 
         @Override
@@ -97,13 +96,16 @@ public class OAuth2Config {
     @Configuration
     @EnableAuthorizationServer
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+
         @Autowired DataSource dataSource;
         @Autowired TokenStore tokenStore;
+        @Autowired AuthenticationManager authenticationManager;
+
         @Bean
         protected AuthorizationCodeServices authorizationCodeServices() {return new JdbcAuthorizationCodeServices(dataSource);}
+
         @Bean
         protected ApprovalStore approvalStore() {return new JdbcApprovalStore(dataSource);}
-        @Autowired AuthenticationManager authenticationManager;
 
         @Override
         public void configure(AuthorizationServerSecurityConfigurer security) {
@@ -127,22 +129,28 @@ public class OAuth2Config {
 
     @Order(1)
     @Configuration
-    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    public static class FormLoginWebSecurityConfigureAdapter extends WebSecurityConfigurerAdapter {
+
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http
-                    .requestMatchers().antMatchers(
-                            "/swagger-resources/**", "/swagger-ui.html**", "/swagger",
-                            "/oauth/authorize",
-                            "/admin/**",
-                            "/login", "/logout",
-                            "/h2-console/**")
-                    .and().csrf().disable()
-                    .authorizeRequests()
-                    .antMatchers("/admin/**", "/h2-console/**").hasAnyAuthority(Authority.Name.ROLE_ADMIN.toString())
-                    .antMatchers("/swagger-resources/**", "/swagger-ui.html**", "/swagger").hasAnyAuthority(Authority.Name.ROLE_SWAGGER.toString(), Authority.Name.ROLE_ADMIN.toString())
-                    .and().formLogin().loginPage("/login").failureUrl("/login?error=1").permitAll()
-                    .and().logout().logoutUrl("/logout").permitAll();
+                .requestMatchers().antMatchers(
+                        "/swagger-resources/**",
+                        "/swagger-ui.html**",
+                        "/swagger",
+                        "/oauth/authorize",
+                        "/admin/**",
+                        "/login", "/logout",
+                        "/h2-console/**"
+                )
+                .and().csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/admin/**", "/h2-console/**")
+                .hasAnyAuthority(Authority.Name.ROLE_ADMIN.toString())
+                .antMatchers("/swagger-resources/**", "/swagger-ui.html**", "/swagger")
+                .hasAnyAuthority(Authority.Name.ROLE_SWAGGER.toString(), Authority.Name.ROLE_ADMIN.toString())
+                .and().formLogin().loginPage("/login").failureUrl("/login?error=1").permitAll()
+                .and().logout().logoutUrl("/logout").permitAll();
         }
     }
 

@@ -14,7 +14,6 @@ import java.util.Collection;
 @Service
 public class SecurityTool {
 
-
     public boolean isUser(Long id) {
         return id.longValue() == getCustomUserDetails().getId().longValue();
     }

@@ -38,6 +38,16 @@ public class UserService {
         user.setActivated(true);
         create(user);
         authorityService.relateUser(Authority.Name.ROLE_ADMIN, user.getId());
+
+        user = new User();
+        user.setUsername("soma");
+        user.setName("silvio");
+        user.setLastname("franco");
+        user.setEmail("silvio@gmail.com");
+        user.setPassword(passwordEncoder.encode("1234"));
+        user.setActivated(true);
+        create(user);
+        authorityService.relateUser(Authority.Name.ROLE_ADMIN, user.getId());
     }
 
     public OAuth2AccessToken login(String username, String password) throws HttpRequestMethodNotSupportedException {
@@ -46,14 +56,6 @@ public class UserService {
         }
         ResponseEntity<OAuth2AccessToken> accessToken = tokenTool.customLogin(username, password);
         return accessToken.getBody();
-    }
-
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    public boolean existsById(Long id) {
-        return userRepository.existsById(id);
     }
 
     public User findById(Long id) {
@@ -90,7 +92,15 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
     }
 }

@@ -18,9 +18,7 @@ public class LogService {
 
     public static LogService out;
 
-//    @Autowired LogRepository logRepository;
     @Autowired SecurityTool securityService;
-
 
     @PostConstruct
     public void init() {
@@ -102,7 +100,6 @@ public class LogService {
             log.setLineNumber(stackTraceElement.getLineNumber());
         }
 
-//        logRepository.save(log);
         String typeString = null;
         switch (type) {
             case INFO: typeString = "[21;32m" + "  INFO"; break;

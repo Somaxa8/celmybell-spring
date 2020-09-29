@@ -35,8 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void configurationGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
+    public void configurationGlobal(AuthenticationManagerBuilder authManagerBuilder) throws Exception {
+        authManagerBuilder
                 .userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
@@ -44,25 +44,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web
-                .ignoring()
-                .antMatchers(
-                        "/templates/public/**",
-                        "/templates/error/**",
-                        "/static/**",
-                        "favicon.ico",
-                        "/h2-console/**"
-                );
+            .ignoring()
+            .antMatchers(
+                "/templates/public/**",
+                "/templates/error/**",
+                "/static/**",
+                "favicon.ico",
+                "/h2-console/**"
+            );
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .httpBasic().realmName(appName)
-                .and().sessionManagement()
-                .sessionFixation().none()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().requestMatchers().antMatchers("/oauth/authorize")
-                .and().authorizeRequests().antMatchers("/oauth/authorize").authenticated();
+            .httpBasic().realmName(appName)
+            .and().sessionManagement()
+            .sessionFixation().none()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().requestMatchers().antMatchers("/oauth/authorize")
+            .and().authorizeRequests().antMatchers("/oauth/authorize").authenticated();
     }
 
     @Override

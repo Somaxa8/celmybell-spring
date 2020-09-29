@@ -26,7 +26,6 @@ public class TokenTool {
     @Autowired TokenEndpoint tokenEndpoint;
     @Autowired OAuthAccessTokenRepository oAuthAccessTokenRepository;
 
-
     public ResponseEntity<OAuth2AccessToken> customLogin(String email, String password) throws HttpRequestMethodNotSupportedException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("username", email);

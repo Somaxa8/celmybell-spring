@@ -17,55 +17,53 @@ import java.io.IOException;
 
 @Component
 public class LogoutSuccess extends AbstractAuthenticationTargetUrlRequestHandler implements LogoutSuccessHandler {
-
     @Autowired TokenStore tokenStore;
 
-
     @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+    public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse res, Authentication authentication) throws IOException {
         LogService.out.debug("/logout");
-        String token = request.getHeader("Authorization");
+        String token = req.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             String tokenString = token.substring(7);
             OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(tokenString);
             if (oAuth2AccessToken != null) {
                 tokenStore.removeAccessToken(oAuth2AccessToken);
-                setSuccessBody(response, tokenString);
+                setSuccessBody(res, tokenString);
             } else {
-                setUnauthorizedBody(response, tokenString);
+                setUnauthorizedBody(res, tokenString);
             }
         } else {
-            setUnauthorizedBody(response);
+            setUnauthorizedBody(res);
         }
     }
 
-    private void setSuccessBody(HttpServletResponse response, String tokenString) throws IOException {
+    private void setSuccessBody(HttpServletResponse res, String tokenString) throws IOException {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("message", "token_revoked");
         jsonObject.addProperty("description", "Access token revoked: " + tokenString);
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().print(jsonObject);
+        res.setStatus(HttpServletResponse.SC_OK);
+        res.setContentType("application/json;charset=UTF-8");
+        res.getWriter().print(jsonObject);
     }
 
-    private void setUnauthorizedBody(HttpServletResponse response, String tokenString) throws IOException {
+    private void setUnauthorizedBody(HttpServletResponse res, String tokenString) throws IOException {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("error", "invalid_token");
         jsonObject.addProperty("error_description", "Invalid access token: " + tokenString);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().print(jsonObject);
+        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        res.setContentType("application/json;charset=UTF-8");
+        res.getWriter().print(jsonObject);
     }
 
-    private void setUnauthorizedBody(HttpServletResponse response) throws IOException {
+    private void setUnauthorizedBody(HttpServletResponse res) throws IOException {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("timestamp", DateTime.now().toString());
         jsonObject.addProperty("status", 401);
         jsonObject.addProperty("error", "Unauthorized");
         jsonObject.addProperty("message", "Full authentication is required to access this resource");
         jsonObject.addProperty("path", "/api/logout");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().print(jsonObject);
+        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        res.setContentType("application/json;charset=UTF-8");
+        res.getWriter().print(jsonObject);
     }
 }
