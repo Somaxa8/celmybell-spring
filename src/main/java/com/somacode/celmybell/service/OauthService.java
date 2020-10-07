@@ -1,6 +1,7 @@
-package com.somacode.celmybell.service.tool;
+package com.somacode.celmybell.service;
 
 import com.somacode.celmybell.repository.OAuthAccessTokenRepository;
+import com.somacode.celmybell.service.tool.SecurityTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class TokenTool {
+public class OauthService {
 
     @Value("${custom.my-secret-token}") String secretToken;
     @Value("${spring.application.name}") String clientId;
@@ -32,6 +33,18 @@ public class TokenTool {
         parameters.put("password", password);
         parameters.put("grant_type", "password");
         parameters.put("scope", "read write");
+        parameters.put("client_secret", secretToken);
+        parameters.put("client_id", clientId);
+
+        Object p = new User(clientId, secretToken, SecurityTool.getAllAuthorities());
+        Principal principal = new UsernamePasswordAuthenticationToken(p, secretToken, SecurityTool.getAllAuthorities());
+        return tokenEndpoint.postAccessToken(principal, parameters);
+    }
+
+    public ResponseEntity<OAuth2AccessToken> customRefresh(String refreshToken) throws HttpRequestMethodNotSupportedException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("refresh_token", refreshToken);
+        parameters.put("grant_type", "refresh_token");
         parameters.put("client_secret", secretToken);
         parameters.put("client_id", clientId);
 

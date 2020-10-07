@@ -6,7 +6,6 @@ import com.somacode.celmybell.entity.Authority;
 import com.somacode.celmybell.entity.User;
 import com.somacode.celmybell.repository.UserRepository;
 import com.somacode.celmybell.service.tool.PatchTool;
-import com.somacode.celmybell.service.tool.TokenTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +25,7 @@ public class UserService {
     @Autowired PatchTool patchTool;
     @Autowired PasswordEncoder passwordEncoder;
     @Autowired AuthorityService authorityService;
-    @Autowired TokenTool tokenTool;
+    @Autowired OauthService oauthService;
 
     public void init() {
         User user = new User();
@@ -54,8 +53,17 @@ public class UserService {
         if (!userRepository.existsByEmail(username)) {
             throw new InvalidGrantException("Bad credentials");
         }
-        ResponseEntity<OAuth2AccessToken> accessToken = tokenTool.customLogin(username, password);
+        ResponseEntity<OAuth2AccessToken> accessToken = oauthService.customLogin(username, password);
         return accessToken.getBody();
+    }
+
+    public OAuth2AccessToken refresh(String refreshToken) throws HttpRequestMethodNotSupportedException {
+        ResponseEntity<OAuth2AccessToken> accessToken = oauthService.customRefresh(refreshToken);
+        return accessToken.getBody();
+    }
+
+    public void logout(Long userId) {
+        oauthService.customLogout(userId);
     }
 
     public User findById(Long id) {

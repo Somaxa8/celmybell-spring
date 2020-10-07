@@ -12,7 +12,7 @@ import java.util.Set;
 @Data
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     private String username;
