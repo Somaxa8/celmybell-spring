@@ -11,8 +11,8 @@ import java.util.Set;
 @Entity
 @Data
 public class User implements Serializable {
-    @Id
-    @GeneratedValue
+
+    @Id @GeneratedValue
     private Long id;
 
     private String username;

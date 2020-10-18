@@ -62,6 +62,9 @@ dependencies {
 	//JWT
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
 	compile 'io.jsonwebtoken:jjwt:0.9.1'
+
+	// The file upload depends on this
+	compile 'commons-fileupload:commons-fileupload:1.4'
 }
 
 test {

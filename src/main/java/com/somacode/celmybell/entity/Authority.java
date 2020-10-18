@@ -20,8 +20,7 @@ public class Authority implements Serializable {
         ROLE_SUPERADMIN, ROLE_ADMIN, ROLE_USER, ROLE_SWAGGER
     }
 
-    @Id
-    @Enumerated(EnumType.STRING)
+    @Id @Enumerated(EnumType.STRING)
     private Name name;
     private String description;
 
@@ -35,4 +34,5 @@ public class Authority implements Serializable {
 
     @Transient
     private Boolean enabled;
+
 }
