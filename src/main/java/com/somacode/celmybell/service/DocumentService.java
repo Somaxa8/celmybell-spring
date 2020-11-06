@@ -28,6 +28,7 @@ public class DocumentService {
     @Autowired DocumentRepository documentRepository;
     @Autowired StorageTool storageTool;
 
+
     public Document create(MultipartFile file, Document.Type type, String description, String title) {
         Document document = createEntity(file, type, description, title);
         saveFile(file, document);
@@ -69,28 +70,14 @@ public class DocumentService {
     }
 
     public void delete(Long id) {
-        if (!documentRepository.existsById(id)) {
-            throw new NotFoundException();
-        }
-        Document document = documentRepository.getOne(id);
+        Document document = findById(id);
 
         storageTool.delete(getFolderFromType(document.getType()), document.getName());
         documentRepository.deleteById(id);
     }
 
-    public Document findById(Long id) {
-        if (!documentRepository.existsById(id)) {
-            throw new NotFoundException();
-        }
-        return documentRepository.getOne(id);
-    }
-
     public ResponseEntity<Resource> findByIdAsResource(Long id) {
-        if (!documentRepository.existsById(id)) {
-            throw new NotFoundException();
-        }
-
-        Document document = documentRepository.getOne(id);
+        Document document = findById(id);
         String extension = document.getExtension() != null && !document.getExtension().isEmpty() ? "." + document.getExtension() : "";
         String filename = document.getBaseName() + extension;
         String mediaType = "application/octet-stream";
@@ -106,11 +93,7 @@ public class DocumentService {
     }
 
     public ResponseEntity<InputStreamResource> findByIdAsStream(Long id) {
-        if (!documentRepository.existsById(id)) {
-            throw new NotFoundException();
-        }
-
-        Document document = documentRepository.getOne(id);
+        Document document = findById(id);
         Resource resource = storageTool.load(getFolderFromType(document.getType()), document.getName());
 
         try {
@@ -120,6 +103,13 @@ public class DocumentService {
         } catch (IOException e) {
             throw new BadRequestException("Document cannot be loaded");
         }
+    }
+
+    public Document findById(Long id) {
+        if (!documentRepository.existsById(id)) {
+            throw new NotFoundException();
+        }
+        return documentRepository.getOne(id);
     }
 
     public Document clone(Document document) {

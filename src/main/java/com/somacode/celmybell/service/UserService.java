@@ -7,12 +7,8 @@ import com.somacode.celmybell.entity.User;
 import com.somacode.celmybell.repository.UserRepository;
 import com.somacode.celmybell.service.tool.PatchTool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -49,30 +45,6 @@ public class UserService {
         authorityService.relateUser(Authority.Name.ROLE_USER, user.getId());
     }
 
-    public OAuth2AccessToken login(String username, String password) throws HttpRequestMethodNotSupportedException {
-        if (!userRepository.existsByEmail(username)) {
-            throw new InvalidGrantException("Bad credentials");
-        }
-        ResponseEntity<OAuth2AccessToken> accessToken = oauthService.customLogin(username, password);
-        return accessToken.getBody();
-    }
-
-    public OAuth2AccessToken refresh(String refreshToken) throws HttpRequestMethodNotSupportedException {
-        ResponseEntity<OAuth2AccessToken> accessToken = oauthService.customRefresh(refreshToken);
-        return accessToken.getBody();
-    }
-
-    public void logout(Long userId) {
-        oauthService.customLogout(userId);
-    }
-
-    public User findById(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new NotFoundException("User does not exist");
-        }
-        return userRepository.getOne(id);
-    }
-
     public User create(User user) {
         if(user.getName() == null || user.getName().isEmpty()) {
           throw new BadRequestException("Invalid name");
@@ -81,10 +53,7 @@ public class UserService {
     }
 
     public User update(Long id, User user) {
-        if (!userRepository.existsById(id)) {
-            throw new NotFoundException("User does not exist");
-        }
-        User u = userRepository.getOne(id);
+        User u = findById(id);
 
         user.setId(null);
         user.setPassword(null);
@@ -98,6 +67,13 @@ public class UserService {
             throw new NotFoundException("User does not exist");
         }
         userRepository.deleteById(id);
+    }
+
+    public User findById(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new NotFoundException("User does not exist");
+        }
+        return userRepository.getOne(id);
     }
 
     public List<User> findAll() {

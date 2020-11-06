@@ -1,6 +1,7 @@
 package com.somacode.celmybell.service;
 
 import com.somacode.celmybell.repository.OAuthAccessTokenRepository;
+import com.somacode.celmybell.repository.UserRepository;
 import com.somacode.celmybell.service.tool.SecurityTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,6 +28,7 @@ public class OauthService {
     @Value("${spring.application.name}") String clientId;
     @Autowired TokenEndpoint tokenEndpoint;
     @Autowired OAuthAccessTokenRepository oAuthAccessTokenRepository;
+    @Autowired UserRepository userRepository;
 
     public ResponseEntity<OAuth2AccessToken> customLogin(String email, String password) throws HttpRequestMethodNotSupportedException {
         Map<String, String> parameters = new HashMap<>();
@@ -56,6 +59,23 @@ public class OauthService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void customLogout(Long employeeId) {
         oAuthAccessTokenRepository.deleteByUserName_Id(employeeId);
+    }
+
+    public OAuth2AccessToken login(String username, String password) throws HttpRequestMethodNotSupportedException {
+        if (!userRepository.existsByEmail(username)) {
+            throw new InvalidGrantException("Bad credentials");
+        }
+        ResponseEntity<OAuth2AccessToken> accessToken = customLogin(username, password);
+        return accessToken.getBody();
+    }
+
+    public OAuth2AccessToken refresh(String refreshToken) throws HttpRequestMethodNotSupportedException {
+        ResponseEntity<OAuth2AccessToken> accessToken = customRefresh(refreshToken);
+        return accessToken.getBody();
+    }
+
+    public void logout(Long userId) {
+        customLogout(userId);
     }
 
 }

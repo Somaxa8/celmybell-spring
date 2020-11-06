@@ -17,6 +17,7 @@ public class AuthorityService {
     @Autowired AuthorityRepository authorityRepository;
     @Autowired UserService userService;
 
+
     public void init() {
         if (authorityRepository.count() <= 0) {
             for (Authority.Name name : Authority.Name.values()) {

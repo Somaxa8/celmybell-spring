@@ -42,7 +42,7 @@ public class DrawingCategoryService {
 
     public DocumentCategory update(Long drawingCategoryId, Long parentId, String name) {
         if (!documentCategoryRepository.existsById(drawingCategoryId)) {
-            throw new NotFoundException("productCategoryId does not exist");
+            throw new NotFoundException();
         }
 
         if (parentId != null) {
@@ -53,7 +53,7 @@ public class DrawingCategoryService {
             }
         }
 
-        val drawingCategory = documentCategoryRepository.getOne(drawingCategoryId);
+        DocumentCategory drawingCategory = documentCategoryRepository.getOne(drawingCategoryId);
         if (parentId == null) {
             drawingCategory.setParent(null);
         } else {

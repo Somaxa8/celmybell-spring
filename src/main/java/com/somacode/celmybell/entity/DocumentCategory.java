@@ -1,8 +1,6 @@
 package com.somacode.celmybell.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
@@ -12,8 +10,6 @@ import java.util.List;
 
 @Entity
 @Data
-@EqualsAndHashCode(of = "id")
-@ToString(of = "id")
 public class DocumentCategory implements Serializable {
 
     @Id @GeneratedValue
