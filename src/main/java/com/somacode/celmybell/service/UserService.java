@@ -52,14 +52,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User update(Long id, User user) {
-        User u = findById(id);
+    public User update(Long id, User request) {
+        User user = findById(id);
 
-        user.setId(null);
-        user.setPassword(null);
+        request.setId(null);
+        request.setPassword(null);
 
-        patchTool.patch(user, u);
-        return userRepository.save(u);
+        patchTool.patch(request, user);
+        return userRepository.save(user);
     }
 
     public void delete(Long id) {

@@ -28,6 +28,7 @@ public class OauthController {
         loginResponse.setAuthorities(user.getAuthorities());
         return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
     }
+
     @PostMapping("/api/oauth/refresh")
     public ResponseEntity<LoginResponse> postRefresh(@RequestParam String refreshToken) throws HttpRequestMethodNotSupportedException {
         LoginResponse loginResponse = new LoginResponse();
@@ -40,4 +41,5 @@ public class OauthController {
         oauthService.logout(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
+
 }
