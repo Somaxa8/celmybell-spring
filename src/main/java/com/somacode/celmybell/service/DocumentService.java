@@ -3,6 +3,7 @@ package com.somacode.celmybell.service;
 import com.somacode.celmybell.config.exception.BadRequestException;
 import com.somacode.celmybell.config.exception.NotFoundException;
 import com.somacode.celmybell.entity.Document;
+import com.somacode.celmybell.entity.DocumentCategory;
 import com.somacode.celmybell.repository.DocumentRepository;
 import com.somacode.celmybell.service.tool.StorageTool;
 import org.apache.commons.io.FilenameUtils;
@@ -20,13 +21,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @Transactional
 public class DocumentService {
 
-    @Autowired DocumentRepository documentRepository;
     @Autowired StorageTool storageTool;
+    @Autowired DocumentRepository documentRepository;
+    @Autowired DocumentCategoryService documentCategoryService;
 
 
     public Document create(MultipartFile file, Document.Type type, String description, String title) {
@@ -112,6 +115,10 @@ public class DocumentService {
         return documentRepository.getOne(id);
     }
 
+    public List<Document> findAll() {
+        return documentRepository.findAll();
+    }
+
     public Document clone(Document document) {
         Document d = new Document();
         documentRepository.save(d);
@@ -130,6 +137,24 @@ public class DocumentService {
         storageTool.save(resource, getFolderFromType(d.getType()), d.getName());
 
         return d;
+    }
+
+    public boolean existsById(Long id) {
+        return documentRepository.existsById(id);
+    }
+
+    public void relateCategory(Long id, Long documentCategoryId) {
+        if (!documentCategoryService.existsById(documentCategoryId) || existsById(id)) {
+            throw new NotFoundException();
+        }
+        DocumentCategory documentCategory = documentCategoryService.findById(id);
+        Document document = findById(id);
+
+        if (document.getDocumentCategory() == null) {
+            document.setDocumentCategory(documentCategory);
+        }
+
+        documentRepository.save(document);
     }
 
     private static MediaType getMimeType(String extension) {

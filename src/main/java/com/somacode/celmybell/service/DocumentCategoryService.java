@@ -2,6 +2,7 @@ package com.somacode.celmybell.service;
 
 import com.somacode.celmybell.config.exception.BadRequestException;
 import com.somacode.celmybell.config.exception.NotFoundException;
+import com.somacode.celmybell.entity.Document;
 import com.somacode.celmybell.entity.DocumentCategory;
 import com.somacode.celmybell.repository.DocumentCategoryRepository;
 import lombok.val;
@@ -13,9 +14,11 @@ import java.util.List;
 
 @Service
 @Transactional
-public class DrawingCategoryService {
-    @Autowired
-    DocumentCategoryRepository documentCategoryRepository;
+public class DocumentCategoryService {
+
+    @Autowired DocumentCategoryRepository documentCategoryRepository;
+    @Autowired DocumentService documentService;
+
 
     public void init() {
         create("Dibujo", null);
@@ -30,7 +33,7 @@ public class DrawingCategoryService {
             throw new IllegalArgumentException();
         }
 
-        val drawingCategory = new DocumentCategory();
+        DocumentCategory drawingCategory = new DocumentCategory();
         drawingCategory.setCategory(name);
 
         if (parentId != null) {
@@ -40,20 +43,16 @@ public class DrawingCategoryService {
         return documentCategoryRepository.save(drawingCategory);
     }
 
-    public DocumentCategory update(Long drawingCategoryId, Long parentId, String name) {
-        if (!documentCategoryRepository.existsById(drawingCategoryId)) {
-            throw new NotFoundException();
-        }
-
+    public DocumentCategory update(Long documentCategoryId, Long parentId, String name) {
         if (parentId != null) {
             if (!documentCategoryRepository.existsById(parentId)) {
                 throw new NotFoundException("parentId does not exist");
-            } else if (parentId.longValue() == drawingCategoryId.longValue()) {
-                throw new BadRequestException("drawingCategoryId cannot be its parent");
+            } else if (parentId.longValue() == documentCategoryId.longValue()) {
+                throw new BadRequestException("documentCategoryId cannot be its parent");
             }
         }
 
-        DocumentCategory drawingCategory = documentCategoryRepository.getOne(drawingCategoryId);
+        DocumentCategory drawingCategory = findById(documentCategoryId);
         if (parentId == null) {
             drawingCategory.setParent(null);
         } else {
@@ -72,6 +71,10 @@ public class DrawingCategoryService {
         DocumentCategory productCategory = documentCategoryRepository.getOne(id);
         productCategory.setIsParent(!productCategory.getChildren().isEmpty());
         return productCategory;
+    }
+
+    public void delete(Long id) {
+        documentCategoryRepository.deleteById(id);
     }
 
     public List<DocumentCategory> findAll() {

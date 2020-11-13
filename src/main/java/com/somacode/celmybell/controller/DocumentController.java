@@ -5,10 +5,10 @@ import com.somacode.celmybell.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 public class DocumentController {
@@ -24,5 +24,21 @@ public class DocumentController {
             ) {
         Document document = documentService.create(file, Document.Type.IMAGE, description, title);
         return ResponseEntity.status(HttpStatus.CREATED).body(document);
+    }
+
+    @GetMapping("/public/documents")
+    public ResponseEntity<List<Document>> getDocuments() {
+        return ResponseEntity.status(HttpStatus.OK).body(documentService.findAll());
+    }
+
+    @GetMapping("/public/documents/{id}")
+    public ResponseEntity<Document> getDocument(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(documentService.findById(id));
+    }
+
+    @DeleteMapping("/api/documents/{id}")
+    public ResponseEntity<?> deleteDocument(@PathVariable Long id) {
+        documentService.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }
