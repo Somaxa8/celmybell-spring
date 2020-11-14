@@ -42,4 +42,17 @@ public class AuthorityService {
         user.getAuthorities().add(authority);
         authorityRepository.save(authority);
     }
+
+    public void unrelateUser(Authority.Name name, Long userId) {
+        if (!authorityRepository.existsById(name) || !userService.existsById(userId)) {
+            throw new NotFoundException();
+        }
+
+        User user = userService.findById(userId);
+        Authority authority = authorityRepository.getOne(name);
+
+        authority.getUsers().remove(user);
+        user.getAuthorities().remove(authority);
+        authorityRepository.save(authority);
+    }
 }

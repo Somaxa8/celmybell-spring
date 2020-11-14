@@ -24,6 +24,7 @@ public class UserService {
     @Autowired OauthService oauthService;
 
     public void init() {
+        if (userRepository.count() <= 0) {
         User user = new User();
         user.setUsername("celmybell");
         user.setName("celmy");
@@ -43,6 +44,7 @@ public class UserService {
         user.setActivated(true);
         create(user);
         authorityService.relateUser(Authority.Name.ROLE_USER, user.getId());
+        }
     }
 
     public User create(User user) {

@@ -2,6 +2,8 @@ package com.somacode.celmybell.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,6 +12,8 @@ import java.util.Set;
 
 @Entity
 @Data
+@EqualsAndHashCode(of = "name")
+@ToString(of = "name")
 public class Authority implements Serializable {
 
     public enum Name {

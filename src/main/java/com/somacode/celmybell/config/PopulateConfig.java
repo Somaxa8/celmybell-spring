@@ -16,6 +16,6 @@ public class PopulateConfig {
     public void init() {
         authorityService.init();
         userService.init();
-        documentCategoryService.init();
+        //documentCategoryService.init();
     }
 }
