@@ -31,6 +31,11 @@ public class DocumentController {
         return ResponseEntity.status(HttpStatus.OK).body(documentService.findAll());
     }
 
+    @GetMapping("/public/documents/category/{documentCategoryId}")
+    public ResponseEntity<List<Document>> getDocuments(@PathVariable Long documentCategoryId) {
+        return ResponseEntity.status(HttpStatus.OK).body(documentService.findDocumentsByDocumentCategoryId(documentCategoryId));
+    }
+
     @GetMapping("/public/documents/{id}")
     public ResponseEntity<Document> getDocument(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(documentService.findById(id));

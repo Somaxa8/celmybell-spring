@@ -170,6 +170,13 @@ public class DocumentService {
         documentRepository.save(document);
     }
 
+    public List<Document> findDocumentsByDocumentCategoryId(Long documentCategoryId) {
+        if (!documentCategoryService.existsById(documentCategoryId)) {
+            throw new NotFoundException();
+        }
+        return documentRepository.findDocumentsByDocumentCategory_Id(documentCategoryId);
+    }
+
     private static MediaType getMimeType(String extension) {
         if (extension == null) {
             return MediaType.TEXT_PLAIN;
