@@ -1,0 +1,17 @@
+spring:
+  h2:
+    console:
+      enabled: false
+#  datasource:
+#    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=MySQL;IGNORECASE=TRUE;
+#    username: root
+custom:
+  username: admin@celmybell.com
+  password: 1234
+  version: 1.0
+  my-secret-token: my-secret-token
+  access-token-validity: 50000
+  refresh-token-validity: 50000
+  #    base-url: ${server.address}:${server.port}
+  base-url: 51.178.19.230:8082
+  protocol: http

@@ -47,13 +47,13 @@ public class DocumentController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
-    @PostMapping("/api/documents/{id}/relate/{categoryId}")
+    @PatchMapping("/api/documents/{id}/category/{categoryId}/relate")
     public ResponseEntity<?> relateDocumentCategory(@PathVariable Long id, @PathVariable Long categoryId) {
         documentService.relateCategory(id, categoryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
-    @PostMapping("/api/documents/unrelate/{id}")
+    @PatchMapping("/api/documents/{id}/unrelate")
     public ResponseEntity<?> relateDocumentCategory(@PathVariable Long id) {
         documentService.unrelateCategory(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);

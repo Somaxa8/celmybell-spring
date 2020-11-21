@@ -4,6 +4,10 @@ plugins {
 	id 'java'
 }
 
+apply {
+	from('gradle/docker.gradle')
+}
+
 ext {
 	set('springCloudVersion', "Hoxton.SR8")
 }

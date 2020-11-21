@@ -1,0 +1,22 @@
+task buildDocker(dependsOn: 'build') {
+    doLast {
+
+        exec {
+            commandLine 'docker', 'build', '-f', 'gradle/Dockerfile', '-t', 'celmybell', 'build/libs/'
+        }
+
+        def springProfile = 'SPRING_PROFILES_ACTIVE=' + String.valueOf(profile)
+        def pathStorage = '/root/celmybell/storage/:/static/storage'
+
+        exec {
+            commandLine 'docker', 'run', '-d',
+                    '--name', 'celmybell',
+                    '--network', 'celmybell',
+                    '-p', '8082:8080',
+                    '-v', pathStorage,
+                    '--restart', 'always',
+                    '-e', springProfile, 'celmybell'
+        }
+
+    }
+}
