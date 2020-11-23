@@ -13,5 +13,5 @@ custom:
   access-token-validity: 50000
   refresh-token-validity: 50000
   #    base-url: ${server.address}:${server.port}
-  base-url: 51.178.19.230:8082
+  base-url: 51.210.6.57:8082
   protocol: http
