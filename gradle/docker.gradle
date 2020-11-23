@@ -12,7 +12,7 @@ task buildDocker(dependsOn: 'build') {
             commandLine 'docker', 'run', '-d',
                     '--name', 'celmybell',
                     '--network', 'celmybell',
-                    '-p', '8082:8080',
+                    '-p', '8080:8080',
                     '-v', pathStorage,
                     '--restart', 'always',
                     '-e', springProfile, 'celmybell'
