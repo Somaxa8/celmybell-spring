@@ -78,7 +78,7 @@ public class ConfigService {
         return configRepository.findByTag(tag);
     }
 
-    public List<Config> findConfigByKey(String key) {
+    public Config findConfigByKey(String key) {
         return configRepository.findByKey(key);
     }
 

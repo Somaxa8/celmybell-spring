@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ConfigRepository extends JpaRepository<Config, Long> {
     List<Config> findByTag(String tag);
-    List<Config> findByKey(String key);
+    Config findByKey(String key);
 }

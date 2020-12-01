@@ -21,7 +21,7 @@ public class ConfigController {
     }
 
     @GetMapping("/public/config")
-    public ResponseEntity<List<Config>> getConfig() {
+    public ResponseEntity<List<Config>> getConfigs() {
         return ResponseEntity.status(HttpStatus.OK).body(configService.findAll());
     }
 
@@ -31,7 +31,7 @@ public class ConfigController {
     }
 
     @GetMapping("/public/config/key")
-    public ResponseEntity<List<Config>> getConfigByKey(@RequestParam String key) {
+    public ResponseEntity<Config> getConfigByKey(@RequestParam String key) {
         return ResponseEntity.status(HttpStatus.OK).body(configService.findConfigByKey(key));
     }
 
