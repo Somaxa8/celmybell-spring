@@ -17,7 +17,7 @@ public class DocumentCategoryController {
 
 
     @PostMapping("/api/document-category")
-    public ResponseEntity<DocumentCategory> createDocumentCategory(
+    public ResponseEntity<DocumentCategory> postDocumentCategory(
             @RequestParam String name,
             @RequestParam(required = false) Long parentId
             ) {

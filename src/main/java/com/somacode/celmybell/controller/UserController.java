@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/api/users")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> postUser(@RequestBody User user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(user));
     }
 
