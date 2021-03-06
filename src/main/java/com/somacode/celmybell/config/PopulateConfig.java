@@ -2,7 +2,7 @@ package com.somacode.celmybell.config;
 
 import com.somacode.celmybell.service.AuthorityService;
 import com.somacode.celmybell.service.ConfigService;
-import com.somacode.celmybell.service.DocumentCategoryService;
+import com.somacode.celmybell.service.ResourceCategoryService;
 import com.somacode.celmybell.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class PopulateConfig {
     @Autowired UserService userService;
     @Autowired AuthorityService authorityService;
-    @Autowired DocumentCategoryService documentCategoryService;
+    @Autowired ResourceCategoryService resourceCategoryService;
     @Autowired ConfigService configService;
 
     public void init() {
@@ -19,6 +19,6 @@ public class PopulateConfig {
         userService.init();
         configService.init();
 
-        //documentCategoryService.init();
+        resourceCategoryService.init();
     }
 }

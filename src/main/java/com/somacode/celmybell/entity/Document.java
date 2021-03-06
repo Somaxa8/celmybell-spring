@@ -31,7 +31,4 @@ public class Document implements Serializable {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @ManyToOne
-    private DocumentCategory documentCategory;
-
 }

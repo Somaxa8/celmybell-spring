@@ -2,10 +2,8 @@ package com.somacode.celmybell.service;
 
 import com.somacode.celmybell.config.exception.BadRequestException;
 import com.somacode.celmybell.config.exception.NotFoundException;
-import com.somacode.celmybell.entity.Authority;
 import com.somacode.celmybell.entity.Document;
-import com.somacode.celmybell.entity.DocumentCategory;
-import com.somacode.celmybell.entity.User;
+import com.somacode.celmybell.entity.ResourceCategory;
 import com.somacode.celmybell.repository.DocumentRepository;
 import com.somacode.celmybell.service.tool.StorageTool;
 import org.apache.commons.io.FilenameUtils;
@@ -31,7 +29,6 @@ public class DocumentService {
 
     @Autowired StorageTool storageTool;
     @Autowired DocumentRepository documentRepository;
-    @Autowired DocumentCategoryService documentCategoryService;
 
 
     public Document create(MultipartFile file, Document.Type type, String description, String title) {
@@ -145,37 +142,37 @@ public class DocumentService {
         return documentRepository.existsById(id);
     }
 
-    public void relateCategory(Long id, Long documentCategoryId) {
-        if (!documentCategoryService.existsById(documentCategoryId) || !existsById(id)) {
-            throw new NotFoundException();
-        }
-        DocumentCategory documentCategory = documentCategoryService.findById(id);
-        Document document = findById(id);
-
-        if (document.getDocumentCategory() == null) {
-            document.setDocumentCategory(documentCategory);
-        }
-
-        documentRepository.save(document);
-    }
-
-    public void unrelateCategory(Long id) {
-        if (!existsById(id)) {
-            throw new NotFoundException();
-        }
-
-        Document document = findById(id);
-
-        document.setDocumentCategory(null);
-        documentRepository.save(document);
-    }
-
-    public List<Document> findDocumentsByDocumentCategoryId(Long documentCategoryId) {
-        if (!documentCategoryService.existsById(documentCategoryId)) {
-            throw new NotFoundException();
-        }
-        return documentRepository.findDocumentsByDocumentCategory_Id(documentCategoryId);
-    }
+//    public void relateCategory(Long id, Long documentCategoryId) {
+//        if (!documentCategoryService.existsById(documentCategoryId) || !existsById(id)) {
+//            throw new NotFoundException();
+//        }
+//        ResourceCategory documentCategory = documentCategoryService.findById(id);
+//        Document document = findById(id);
+//
+//        if (document.getDocumentCategory() == null) {
+//            document.setDocumentCategory(documentCategory);
+//        }
+//
+//        documentRepository.save(document);
+//    }
+//
+//    public void unrelateCategory(Long id) {
+//        if (!existsById(id)) {
+//            throw new NotFoundException();
+//        }
+//
+//        Document document = findById(id);
+//
+//        document.setDocumentCategory(null);
+//        documentRepository.save(document);
+//    }
+//
+//    public List<Document> findDocumentsByDocumentCategoryId(Long documentCategoryId) {
+//        if (!documentCategoryService.existsById(documentCategoryId)) {
+//            throw new NotFoundException();
+//        }
+//        return documentRepository.findDocumentsByDocumentCategory_Id(documentCategoryId);
+//    }
 
     private static MediaType getMimeType(String extension) {
         if (extension == null) {

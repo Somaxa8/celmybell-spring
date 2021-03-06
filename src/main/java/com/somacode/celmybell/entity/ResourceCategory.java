@@ -10,23 +10,23 @@ import java.util.List;
 
 @Entity
 @Data
-public class DocumentCategory implements Serializable {
+public class ResourceCategory implements Serializable {
 
     @Id @GeneratedValue
     private Long id;
 
-    private String category;
+    private String title;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "documentCategory")
-    private List<Document> documents = new ArrayList<>();
+    @OneToMany(mappedBy = "resourceCategory")
+    private List<Resource> resources = new ArrayList<>();
 
     @ManyToOne
-    private DocumentCategory parent;
+    private ResourceCategory parent;
 
     @JsonIgnore
     @OneToMany(mappedBy = "parent")
-    private List<DocumentCategory> children = new ArrayList<>();
+    private List<ResourceCategory> children = new ArrayList<>();
 
     @Transient
     private Boolean isParent;
