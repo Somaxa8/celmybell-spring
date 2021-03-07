@@ -19,6 +19,6 @@ public class PopulateConfig {
         userService.init();
         configService.init();
 
-        resourceCategoryService.init();
+//        resourceCategoryService.init();
     }
 }
