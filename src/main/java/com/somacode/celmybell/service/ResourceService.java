@@ -6,7 +6,9 @@ import com.somacode.celmybell.entity.Document;
 import com.somacode.celmybell.entity.Resource;
 import com.somacode.celmybell.entity.ResourceCategory;
 import com.somacode.celmybell.repository.ResourceRepository;
+import com.somacode.celmybell.repository.criteria.ResourceCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +20,7 @@ import java.util.List;
 public class ResourceService {
 
     @Autowired ResourceRepository resourceRepository;
+    @Autowired ResourceCriteria resourceCriteria;
     @Autowired ResourceCategoryService resourceCategoryService;
     @Autowired DocumentService documentService;
 
@@ -65,8 +68,8 @@ public class ResourceService {
         return resourceRepository.getOne(id);
     }
 
-    public List<Resource> findAll() {
-        return resourceRepository.findAll();
+    public Page<Resource> findFilterPageable(Integer page, Integer size, String search) {
+        return resourceCriteria.findFilterPageable(page, size, search);
     }
 
     public void delete(Long id) {

@@ -4,6 +4,7 @@ import com.somacode.celmybell.entity.Document;
 import com.somacode.celmybell.entity.Resource;
 import com.somacode.celmybell.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,15 @@ public class ResourceController {
     }
 
     @GetMapping("/public/resources")
-    public ResponseEntity<List<Resource>> getResources() {
-        return ResponseEntity.status(HttpStatus.OK).body(resourceService.findAll());
+    public ResponseEntity<List<Resource>> getResources(
+            @RequestParam(required = false) String search,
+            @RequestParam Integer page,
+            @RequestParam Integer size
+    ) {
+        Page<Resource> result = resourceService.findFilterPageable(page, size, search);
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("X-Total-Count", String.valueOf(result.getTotalElements()))
+                .body(result.getContent());
     }
 
     @GetMapping("/public/resource/{id}")
