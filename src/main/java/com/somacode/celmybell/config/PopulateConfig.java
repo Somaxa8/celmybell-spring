@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 public class PopulateConfig {
     @Autowired UserService userService;
     @Autowired AuthorityService authorityService;
-    @Autowired ResourceCategoryService resourceCategoryService;
     @Autowired ConfigService configService;
 
     public void init() {
