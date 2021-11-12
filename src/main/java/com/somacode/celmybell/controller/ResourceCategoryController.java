@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 public class ResourceCategoryController {
 
-    @Autowired ResourceCategoryService documentCategoryService;
+    @Autowired ResourceCategoryService resourceCategoryService;
 
 
     @PostMapping("/api/resource-category")
@@ -20,22 +20,22 @@ public class ResourceCategoryController {
             @RequestParam String name,
             @RequestParam(required = false) Long parentId
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(documentCategoryService.create(name, parentId));
+        return ResponseEntity.status(HttpStatus.CREATED).body(resourceCategoryService.create(name, parentId));
     }
 
     @DeleteMapping("/api/resource-category/{id}")
     public ResponseEntity<?> deleteResourceCategory(@PathVariable Long id) {
-        documentCategoryService.delete(id);
+        resourceCategoryService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @GetMapping("/public/resource-category")
     public ResponseEntity<List<ResourceCategory>> getResourceCategories() {
-        return ResponseEntity.status(HttpStatus.OK).body(documentCategoryService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(resourceCategoryService.findAll());
     }
 
     @GetMapping("/public/resource-category/{id}")
     public ResponseEntity<ResourceCategory> getResourceCategory(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(documentCategoryService.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(resourceCategoryService.findById(id));
     }
 }
