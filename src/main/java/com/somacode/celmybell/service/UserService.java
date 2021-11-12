@@ -25,25 +25,15 @@ public class UserService {
 
     public void init() {
         if (userRepository.count() <= 0) {
-        User user = new User();
-        user.setUsername("celmybell");
-        user.setName("celmy");
-        user.setLastname("guzman");
-        user.setEmail("celmy@gmail.com");
-        user.setPassword(passwordEncoder.encode("1234"));
-        user.setActivated(true);
-        create(user);
-        authorityService.relateUser(Authority.Role.ADMIN, user.getId());
-
-        user = new User();
-        user.setUsername("soma");
-        user.setName("silvio");
-        user.setLastname("franco");
-        user.setEmail("silvio@gmail.com");
-        user.setPassword(passwordEncoder.encode("1234"));
-        user.setActivated(true);
-        create(user);
-        authorityService.relateUser(Authority.Role.ROLE_USER, user.getId());
+            User user = new User();
+            user.setUsername("celmybell");
+            user.setName("celmy");
+            user.setLastname("guzman");
+            user.setEmail("celmy@gmail.com");
+            user.setPassword(passwordEncoder.encode("1234"));
+            user.setActivated(true);
+            create(user);
+            authorityService.relateUser(Authority.Role.ADMIN, user.getId());
         }
     }
 
@@ -51,6 +41,7 @@ public class UserService {
         if(user.getName() == null || user.getName().isEmpty()) {
           throw new BadRequestException("Invalid name");
         }
+        user.setId(null);
         return userRepository.save(user);
     }
 
