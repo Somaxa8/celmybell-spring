@@ -27,7 +27,7 @@ public class Authority implements Serializable {
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "rel_user_authority",
-            joinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")},
+            joinColumns = {@JoinColumn(name = "authority_role", referencedColumnName = "role")},
             inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}
     )
     private Set<User> users = new HashSet<>();
