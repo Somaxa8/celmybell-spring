@@ -32,9 +32,10 @@ public class ResourceController {
     public ResponseEntity<List<Resource>> getResources(
             @RequestParam(required = false) String search,
             @RequestParam Integer page,
-            @RequestParam Integer size
+            @RequestParam Integer size,
+            @RequestParam Document.Type documentType
     ) {
-        Page<Resource> result = resourceService.findFilterPageable(page, size, search);
+        Page<Resource> result = resourceService.findFilterPageable(page, size, documentType, search);
         return ResponseEntity.status(HttpStatus.OK)
                 .header("X-Total-Count", String.valueOf(result.getTotalElements()))
                 .body(result.getContent());

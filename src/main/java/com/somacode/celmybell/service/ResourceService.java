@@ -59,8 +59,8 @@ public class ResourceService {
         return resourceRepository.getOne(id);
     }
 
-    public Page<Resource> findFilterPageable(Integer page, Integer size, String search) {
-        return resourceCriteria.findFilterPageable(page, size, search);
+    public Page<Resource> findFilterPageable(Integer page, Integer size, Document.Type documentType, String search) {
+        return resourceCriteria.findFilterPageable(page, size, documentType, search);
     }
 
     public void delete(Long id) {
