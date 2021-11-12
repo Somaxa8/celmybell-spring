@@ -4,7 +4,6 @@ package com.somacode.celmybell.service;
 import com.somacode.celmybell.config.exception.NotFoundException;
 import com.somacode.celmybell.entity.Document;
 import com.somacode.celmybell.entity.Resource;
-import com.somacode.celmybell.entity.ResourceCategory;
 import com.somacode.celmybell.repository.ResourceRepository;
 import com.somacode.celmybell.repository.criteria.ResourceCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @Transactional
@@ -21,42 +19,35 @@ public class ResourceService {
 
     @Autowired ResourceRepository resourceRepository;
     @Autowired ResourceCriteria resourceCriteria;
-    @Autowired ResourceCategoryService resourceCategoryService;
     @Autowired DocumentService documentService;
 
-    public void init() {
-    }
 
-    public Resource create(String title, String description, MultipartFile documentFile, Long categoryId) {
-        if (title.isEmpty() && title.equals("")) throw new IllegalArgumentException();
-        if (description.isEmpty() && description.equals("")) throw new IllegalArgumentException();
-        if (documentFile == null) throw new IllegalArgumentException();
-        if (categoryId == null) throw new IllegalArgumentException();
+    public Resource create(String title, String description, Document.Type documentType, MultipartFile documentFile) {
+        if (title.isEmpty()) throw new IllegalArgumentException();
+        if (description.isEmpty()) throw new IllegalArgumentException();
 
         Resource resource = new Resource();
         resource.setTitle(title);
         resource.setDescription(description);
         resource.setDocument(
-                documentService.create(documentFile, Document.Type.IMAGE, Resource.class.getSimpleName(), title)
+                documentService.create(documentFile, documentType, Resource.class.getSimpleName(), title)
         );
-        resource.setResourceCategory(resourceCategoryService.findById(categoryId));
 
         return resourceRepository.save(resource);
     }
 
-    public Resource update(Long id, String title, String description, MultipartFile documentFile, Long categoryId) {
+    public Resource update(Long id, String title, String description, Document.Type documentType, MultipartFile documentFile) {
         Resource resource = findById(id);
 
         if (title != null) resource.setTitle(title);
         if (description != null) resource.setTitle(description);
-        if (documentFile != null) {
+        if (documentFile != null && documentType != null) {
             Document oldDocument = resource.getDocument();
             resource.setDocument(
-                    documentService.create(documentFile, Document.Type.IMAGE, Resource.class.getSimpleName(), resource.getTitle())
+                    documentService.create(documentFile, documentType, Resource.class.getSimpleName(), resource.getTitle())
             );
             documentService.delete(oldDocument.getId());
         }
-        resource.setResourceCategory(resourceCategoryService.findById(categoryId));
 
         return resourceRepository.save(resource);
     }

@@ -3,7 +3,6 @@ package com.somacode.celmybell.service;
 import com.somacode.celmybell.config.exception.BadRequestException;
 import com.somacode.celmybell.config.exception.NotFoundException;
 import com.somacode.celmybell.entity.Document;
-import com.somacode.celmybell.entity.ResourceCategory;
 import com.somacode.celmybell.repository.DocumentRepository;
 import com.somacode.celmybell.service.tool.StorageTool;
 import org.apache.commons.io.FilenameUtils;

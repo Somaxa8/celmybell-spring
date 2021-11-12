@@ -18,14 +18,14 @@ public class ResourceController {
     @Autowired ResourceService resourceService;
 
 
-    @PostMapping("/api/resource-category/{categoryId}/resource")
+    @PostMapping("/api/resource")
     public ResponseEntity<Resource> postResource(
-            @PathVariable Long categoryId,
             @RequestParam MultipartFile documentFile,
+            @RequestParam Document.Type documentType,
             @RequestParam String description,
             @RequestParam String title
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(resourceService.create(title, description, documentFile, categoryId));
+        return ResponseEntity.status(HttpStatus.CREATED).body(resourceService.create(title, description, documentType, documentFile));
     }
 
     @GetMapping("/public/resources")
@@ -45,16 +45,16 @@ public class ResourceController {
         return ResponseEntity.status(HttpStatus.OK).body(resourceService.findById(id));
     }
 
-    @PatchMapping("/api/resource-category/{categoryId}/resource/{id}")
+    @PatchMapping("/api/resource/{id}")
     public ResponseEntity<Resource> patchResource(
             @PathVariable Long id,
-            @PathVariable Long categoryId,
-            @RequestParam MultipartFile documentFile,
-            @RequestParam String description,
-            @RequestParam String title
+            @RequestParam(required = false) MultipartFile documentFile,
+            @RequestParam(required = false) Document.Type documentType,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String title
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                resourceService.update(id, title, description, documentFile, categoryId)
+                resourceService.update(id, title, description, documentType, documentFile)
         );
     }
 

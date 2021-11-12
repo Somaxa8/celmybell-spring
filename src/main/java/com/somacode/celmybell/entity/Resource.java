@@ -13,6 +13,4 @@ public class Resource {
     private String description;
     @OneToOne
     private Document document;
-    @ManyToOne
-    private ResourceCategory resourceCategory;
 }
