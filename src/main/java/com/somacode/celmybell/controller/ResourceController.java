@@ -24,10 +24,8 @@ public class ResourceController {
             @RequestParam MultipartFile documentFile,
             @RequestParam String description,
             @RequestParam String title
-            ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                resourceService.create(title, description, documentFile, categoryId)
-        );
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(resourceService.create(title, description, documentFile, categoryId));
     }
 
     @GetMapping("/public/resources")
