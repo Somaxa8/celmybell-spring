@@ -18,7 +18,7 @@ public class ResourceController {
     @Autowired ResourceService resourceService;
 
 
-    @PostMapping("/api/resource")
+    @PostMapping("/api/resources")
     public ResponseEntity<Resource> postResource(
             @RequestParam MultipartFile documentFile,
             @RequestParam Document.Type documentType,
@@ -41,12 +41,12 @@ public class ResourceController {
                 .body(result.getContent());
     }
 
-    @GetMapping("/public/resource/{id}")
+    @GetMapping("/public/resources/{id}")
     public ResponseEntity<Resource> getResource(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(resourceService.findById(id));
     }
 
-    @PatchMapping("/api/resource/{id}")
+    @PatchMapping("/api/resources/{id}")
     public ResponseEntity<Resource> patchResource(
             @PathVariable Long id,
             @RequestParam(required = false) MultipartFile documentFile,
@@ -59,7 +59,7 @@ public class ResourceController {
         );
     }
 
-    @DeleteMapping("/api/resource/{id}")
+    @DeleteMapping("/api/resources/{id}")
     public ResponseEntity<?> deleteDocument(@PathVariable Long id) {
         resourceService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
