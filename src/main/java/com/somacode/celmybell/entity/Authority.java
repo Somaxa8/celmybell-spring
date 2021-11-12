@@ -17,7 +17,7 @@ import java.util.Set;
 public class Authority implements Serializable {
 
     public enum Name {
-        ROLE_SUPERADMIN, ROLE_ADMIN, ROLE_USER, ROLE_SWAGGER
+        ROLE_ADMIN, ROLE_SWAGGER
     }
 
     @Id @Enumerated(EnumType.STRING)
