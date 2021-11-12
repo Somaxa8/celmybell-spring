@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class Document implements Serializable {
 
     public enum Type {
-        IMAGE, DOCUMENT
+        IMAGE, MODEL
     }
 
     @Id @GeneratedValue
