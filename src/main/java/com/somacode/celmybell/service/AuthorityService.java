@@ -20,20 +20,20 @@ public class AuthorityService {
 
     public void init() {
         if (authorityRepository.count() <= 0) {
-            for (Authority.Name name : Authority.Name.values()) {
+            for (Authority.Role role : Authority.Role.values()) {
                 Authority authority = new Authority();
-                authority.setName(name);
+                authority.setRole(role);
                 authority.setDescription("");
                 authorityRepository.save(authority);
             }
         }
     }
 
-    public void relateUser(Authority.Name name, Long userId) {
-        if (!authorityRepository.existsById(name) || !userService.existsById(userId)) {
+    public void relateUser(Authority.Role role, Long userId) {
+        if (!authorityRepository.existsById(role) || !userService.existsById(userId)) {
             throw new NotFoundException();
         }
-        Authority authority = authorityRepository.getOne(name);
+        Authority authority = authorityRepository.getOne(role);
         User user = userService.findById(userId);
         authority.getUsers().add(user);
         if (user.getAuthorities() == null) {
@@ -43,13 +43,13 @@ public class AuthorityService {
         authorityRepository.save(authority);
     }
 
-    public void unrelateUser(Authority.Name name, Long userId) {
-        if (!authorityRepository.existsById(name) || !userService.existsById(userId)) {
+    public void unrelateUser(Authority.Role role, Long userId) {
+        if (!authorityRepository.existsById(role) || !userService.existsById(userId)) {
             throw new NotFoundException();
         }
 
         User user = userService.findById(userId);
-        Authority authority = authorityRepository.getOne(name);
+        Authority authority = authorityRepository.getOne(role);
 
         authority.getUsers().remove(user);
         user.getAuthorities().remove(authority);

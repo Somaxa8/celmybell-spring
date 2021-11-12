@@ -34,7 +34,7 @@ public class DatabaseConfig {
             oAuthClientDetails.setScope("read,write");
             oAuthClientDetails.setAuthorizedGrantTypes("password,refresh_token,authorization_code,implicit");
             StringJoiner authorities = new StringJoiner(",");
-            for (Authority.Name authority : Authority.Name.values()) {
+            for (Authority.Role authority : Authority.Role.values()) {
                 authorities.add(authority.toString());
             }
             LogService.out.info("Authorities: " + authorities);

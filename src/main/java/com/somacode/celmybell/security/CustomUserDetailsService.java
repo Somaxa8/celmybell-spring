@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user != null) {
             ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             for (Authority authority : user.getAuthorities()) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName().toString()));
+                grantedAuthorities.add(new SimpleGrantedAuthority(authority.getRole().toString()));
             }
             return new CustomUserDetails(username, user.getPassword(), grantedAuthorities, user.getId());
         } else {

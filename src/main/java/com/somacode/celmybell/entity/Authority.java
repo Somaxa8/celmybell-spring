@@ -12,16 +12,16 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(of = "name")
-@ToString(of = "name")
+@EqualsAndHashCode(of = "role")
+@ToString(of = "role")
 public class Authority implements Serializable {
 
-    public enum Name {
-        ROLE_ADMIN, ROLE_SWAGGER
+    public enum Role {
+        ADMIN, SWAGGER
     }
 
     @Id @Enumerated(EnumType.STRING)
-    private Name name;
+    private Role role;
     private String description;
 
     @JsonIgnore

@@ -33,7 +33,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode("1234"));
         user.setActivated(true);
         create(user);
-        authorityService.relateUser(Authority.Name.ROLE_ADMIN, user.getId());
+        authorityService.relateUser(Authority.Role.ADMIN, user.getId());
 
         user = new User();
         user.setUsername("soma");
@@ -43,7 +43,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode("1234"));
         user.setActivated(true);
         create(user);
-        authorityService.relateUser(Authority.Name.ROLE_USER, user.getId());
+        authorityService.relateUser(Authority.Role.ROLE_USER, user.getId());
         }
     }
 

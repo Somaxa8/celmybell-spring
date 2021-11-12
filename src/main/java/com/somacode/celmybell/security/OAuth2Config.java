@@ -146,9 +146,9 @@ public class OAuth2Config {
                 .and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/admin/**", "/h2-console/**")
-                .hasAnyAuthority(Authority.Name.ROLE_ADMIN.toString())
+                .hasAnyAuthority(Authority.Role.ADMIN.toString())
                 .antMatchers("/swagger-resources/**", "/swagger-ui.html**", "/swagger")
-                .hasAnyAuthority(Authority.Name.ROLE_SWAGGER.toString(), Authority.Name.ROLE_ADMIN.toString())
+                .hasAnyAuthority(Authority.Role.SWAGGER.toString(), Authority.Role.ADMIN.toString())
                 .and().formLogin().loginPage("/login").failureUrl("/login?error=1").permitAll()
                 .and().logout().logoutUrl("/logout").permitAll();
         }

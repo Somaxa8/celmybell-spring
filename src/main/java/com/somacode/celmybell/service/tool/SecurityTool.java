@@ -34,7 +34,7 @@ public class SecurityTool {
 
     public static Collection<? extends GrantedAuthority> getAllAuthorities() {
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-        for (Authority.Name authority : Authority.Name.values()) {
+        for (Authority.Role authority : Authority.Role.values()) {
             authorities.add(new SimpleGrantedAuthority(authority.toString()));
         }
         return authorities;
